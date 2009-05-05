@@ -300,6 +300,7 @@ module Kitabu
   
   class Toc
     include REXML::StreamListener
+    DEFAULT_MAX_DEPTH = 6
 
     def initialize
       @toc = ""
@@ -310,7 +311,8 @@ module Kitabu
 
     def header?(tag=nil)
       tag ||= @tag_name
-      return false unless tag.to_s =~ /h[2-6]/
+      max_depth = Kitabu::Base.config['toc_depth'] || DEFAULT_MAX_DEPTH
+      return false unless tag.to_s =~ /h[2-#{max_depth}]/
       @tag_name = tag
       return true
     end
